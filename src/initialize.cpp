@@ -287,6 +287,16 @@ if(this_node == 0){
   meta_init();
 #endif
 
+//
+// plumed is here
+//
+  if(plumed==1){
+  	fprintf(stderr,"PLUMED IS ON \n");
+  	fprintf(stderr,"PLUMEDFILE IS %s \n",plumedfile);
+	// now do the real initialization
+ 	// check if plumed is available	
+  }
+
 #ifdef CATALYTIC_REACTIONS
 if(reaction.ct_rate != 0.0) {
 

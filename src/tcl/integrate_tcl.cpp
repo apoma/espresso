@@ -275,3 +275,25 @@ int tclcallback_time(Tcl_Interp *interp, void *_data)
   mpi_bcast_parameter(FIELD_SIMTIME);
   return (TCL_OK);
 }
+
+int tclcallback_plumed(Tcl_Interp *interp, void *_data)
+{
+  int tmp_plumed;
+  tmp_plumed = *(int *)_data;
+  if(tmp_plumed<0 || tmp_plumed>1 ){
+	    Tcl_AppendResult(interp, "plumed can be only 1 or 0", (char *) NULL);
+	    return (TCL_ERROR);
+  }
+  plumed=tmp_plumed;  
+  mpi_bcast_parameter(FIELD_PLUMED);
+  return (TCL_OK);
+}
+
+int tclcallback_plumedfile(Tcl_Interp *interp, void *_data)
+{
+  strcpy(plumedfile, (char *)_data);
+  mpi_bcast_parameter(FIELD_PLUMEDFILE);
+  return (TCL_OK);
+}
+
+

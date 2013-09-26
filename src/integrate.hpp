@@ -46,6 +46,10 @@ extern double time_step_half;
 extern double time_step_squared;
 extern double time_step_squared_half;
 
+/** plumed activation **/
+extern int plumed ;
+extern char plumedfile[];
+
 /** Old time step needed for rescaling of forces. */
 extern double old_time_step;
 /** Actual simulation time (only on MASTER NODE). */

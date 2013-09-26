@@ -58,6 +58,7 @@ int tclcallback_node_grid(Tcl_Interp *interp, void *_data)
 int tclcallback_periodicity(Tcl_Interp *interp, void *_data)
 {
   periodic = *(int *)_data;
+  fprintf(stderr,"now setting periodic in the callback: %d\n",periodic);
 
   mpi_bcast_parameter(FIELD_PERIODIC);
 

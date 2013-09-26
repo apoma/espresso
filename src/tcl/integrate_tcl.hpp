@@ -48,6 +48,11 @@ int tclcallback_time(Tcl_Interp *interp, void *_data);
     For more information, see \ref tclcommand_invalidate_system. */
 int tclcommand_invalidate_system(ClientData data, Tcl_Interp *interp, int argc, char **argv);
 
+/** Callback for plumed 
+ */
+int tclcallback_plumed(Tcl_Interp *interp, void *_data);
+int tclcallback_plumedfile(Tcl_Interp *interp, void *_data);
+
 /*@}*/
 
 #endif

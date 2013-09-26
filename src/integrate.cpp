@@ -78,6 +78,10 @@ double time_step_half   = -1.0;
 double time_step_squared= -1.0;
 double time_step_squared_half = -1.0;
 
+/** plumed defaults is  not on **/ 
+int plumed = 0;
+char plumedfile[MAX_DIMENSION]="plumed.dat";
+
 double sim_time         = 0.0;
 double skin             = -1.0;
 double skin2;

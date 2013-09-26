@@ -282,6 +282,12 @@ static void common_bcast_parameter(int i)
     MPI_Bcast((double *)fields[i].data, fields[i].dimension,
 	      MPI_DOUBLE, 0, comm_cart);
     break;
+  case TYPE_CHAR:
+    fprintf(stderr,"broadcasting now!\n");
+    MPI_Bcast((char *)fields[i].data, MAX_DIMENSION,
+	      MPI_CHAR, 0, comm_cart);
+    fprintf(stderr,"broadcasting done!\n");
+    break;
   default: break;
   }
 

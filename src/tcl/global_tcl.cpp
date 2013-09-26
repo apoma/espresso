@@ -75,6 +75,7 @@ int tclcommand_setmd(ClientData data, Tcl_Interp *interp,
   union {
     int    intbuf[MAX_DIMENSION];
     double doublebuf[MAX_DIMENSION];
+    char   charbuf[MAX_DIMENSION];
   } databuf;
   char buffer[TCL_DOUBLE_SPACE + 5];
   int i, j;
@@ -83,8 +84,10 @@ int tclcommand_setmd(ClientData data, Tcl_Interp *interp,
   /* loop over all global variables. Has two purposes:
      either we write al variables or search for the one
      to write */
+ 
   for (i = 0; fields[i].data != NULL; i++) {
     if (all || !strncmp(argv[1], fields[i].name, strlen(argv[1]))) {
+	
       if (!all) {
 	if ((int)strlen(argv[1]) < fields[i].min_length) {
 	  Tcl_AppendResult(interp, "Argument \"",argv[1],"\" not long ", (char *) NULL);
@@ -120,6 +123,12 @@ int tclcommand_setmd(ClientData data, Tcl_Interp *interp,
 	      } else {
 		databuf.intbuf[0] &= ~(1L << j);
 	      }
+          fprintf(stderr, "datatype %s dta %d %d\n",fields[i].name,dta,databuf.intbuf[0]);
+	      break;
+	    }
+            case TYPE_CHAR: {		
+		 fprintf(stderr, "this is a char\n");
+		strcpy(databuf.charbuf,argv[2 + j]);
 	      break;
 	    }
 	    case TYPE_DOUBLE:
@@ -129,7 +138,8 @@ int tclcommand_setmd(ClientData data, Tcl_Interp *interp,
 	    default: ;
 	    }
 	  }
-
+	
+          fprintf(stderr, "now looking for callback %s %d\n",fields[i].name,i);
 	  if (find_callback(i)(interp, databuf.intbuf) != TCL_OK)
 	    return gather_runtime_errors(interp, TCL_ERROR);
 	  /* fall through to write out the set value immediately again */
@@ -153,6 +163,12 @@ int tclcommand_setmd(ClientData data, Tcl_Interp *interp,
 	  else
 	    strcpy(buffer, "0");
 	  break;
+	}
+	case TYPE_CHAR: {
+          //sprintf(buffer, "%s", ((char *)fields[i].data)[j]);
+	  // this allows only one file to be enquired....
+          sprintf(buffer, "%s", ((char *)fields[i].data));
+          break	;	
 	}
 	case TYPE_DOUBLE:
 	  Tcl_PrintDouble(interp, ((double *)fields[i].data)[j], buffer);

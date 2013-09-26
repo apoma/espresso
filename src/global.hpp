@@ -43,6 +43,8 @@
     I guess you can at least assume 16 bits...
 */
 #define TYPE_BOOL 2
+// special for plumedfile 
+#define TYPE_CHAR 3
 
 /** Maximal size of an array in \ref Datafield. */
 #define MAX_DIMENSION 64
@@ -178,6 +180,9 @@ extern const Datafield fields[];
 #define FIELD_GHMC_SCALE          50 
 /** index of \ref lb_components in \ref #fields */
 #define FIELD_LB_COMPONENTS       51 
+/** index of \ref plumed in \ref #fields */
+#define FIELD_PLUMED       52 
+#define FIELD_PLUMEDFILE   53 
 /*@}*/
 
 #endif
