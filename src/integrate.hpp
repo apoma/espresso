@@ -47,7 +47,7 @@ extern double time_step_squared;
 extern double time_step_squared_half;
 
 /** plumed activation **/
-extern int plumed ;
+extern int plumedison ;
 extern char plumedfile[];
 
 /** Old time step needed for rescaling of forces. */

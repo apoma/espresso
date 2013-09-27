@@ -1,0 +1,8 @@
+source ~/bin/sourceme_openmpi_gcc_4.8.sh 
+export CXXFLAGS=" -Wall -g "
+export CPPFLAGS=" -I/Users/davidebranduardi/Programs/plumed2/src/wrapper "
+export LDFLAGS=" -L/Users/davidebranduardi/Programs/plumed2/src/lib -lplumed "
+source ~/Programs/plumed2/sourceme.sh
+./bootstrap.sh 
+./configure --prefix=/Users/davidebranduardi/Programs/Molecular_dynamics/classical/espresso/espresso/install_dir
+make -j 4

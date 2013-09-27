@@ -284,7 +284,7 @@ int tclcallback_plumed(Tcl_Interp *interp, void *_data)
 	    Tcl_AppendResult(interp, "plumed can be only 1 or 0", (char *) NULL);
 	    return (TCL_ERROR);
   }
-  plumed=tmp_plumed;  
+  plumedison=tmp_plumed;  
   mpi_bcast_parameter(FIELD_PLUMED);
   return (TCL_OK);
 }

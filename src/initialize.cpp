@@ -66,6 +66,7 @@
 #include "p3m_gpu.hpp"
 #include "cuda_init.hpp"
 #include "cuda_interface.hpp"
+#include "Plumed.h"
 
 /** whether the thermostat has to be reinitialized before integration */
 static int reinit_thermo = 1;
@@ -290,11 +291,18 @@ if(this_node == 0){
 //
 // plumed is here
 //
-  if(plumed==1){
+  if(plumedison==1){
   	fprintf(stderr,"PLUMED IS ON \n");
   	fprintf(stderr,"PLUMEDFILE IS %s \n",plumedfile);
 	// now do the real initialization
  	// check if plumed is available	
+	if(!plumed_installed()){
+      	      errtext = runtime_error(128);
+	      ERROR_SPRINTF(errtext,"{ You asked for plumed but it is not installed! }");
+      	      check_runtime_errors();
+	}else{
+  		fprintf(stderr,"PLUMED IS CREATED \n");
+	}
   }
 
 #ifdef CATALYTIC_REACTIONS
