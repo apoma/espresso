@@ -29,6 +29,8 @@
 #define INTEG_METHOD_NPT_ISO   0
 #define INTEG_METHOD_NVT       1
 
+#include "Plumed.h"
+#include "mpi.h"
 /************************************************************/
 /** \name Exported Variables */
 /************************************************************/
@@ -49,6 +51,9 @@ extern double time_step_squared_half;
 /** plumed activation **/
 extern int plumedison ;
 extern char plumedfile[];
+extern plumed plumedmain;
+// get a workaround for nonmpi implementation 
+extern MPI_Group plumed_mpi_group_world;
 
 /** Old time step needed for rescaling of forces. */
 extern double old_time_step;

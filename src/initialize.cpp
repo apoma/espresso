@@ -66,8 +66,6 @@
 #include "p3m_gpu.hpp"
 #include "cuda_init.hpp"
 #include "cuda_interface.hpp"
-#include "Plumed.h"
-
 /** whether the thermostat has to be reinitialized before integration */
 static int reinit_thermo = 1;
 static int reinit_electrostatics = 0;
@@ -301,8 +299,29 @@ if(this_node == 0){
 	      ERROR_SPRINTF(errtext,"{ You asked for plumed but it is not installed! }");
       	      check_runtime_errors();
 	}else{
-  		fprintf(stderr,"PLUMED IS CREATED \n");
-	}
+  	      fprintf(stderr,"YOU HAVE PLUMED INSTALLED \n");
+             int double_precision=sizeof(double);
+             double  energyUnits=1.0;
+             double  lengthUnits=1.0;
+             double  timeUnits=1.0;
+             plumedmain=plumed_create();
+             plumed_cmd(plumedmain,"setRealPrecision",&double_precision);
+             // this is not necessary for gromacs units:
+             plumed_cmd(plumedmain,"setMDEnergyUnits",&energyUnits);
+             plumed_cmd(plumedmain,"setMDLengthUnits",&lengthUnits);
+             plumed_cmd(plumedmain,"setMDTimeUnits",&timeUnits);
+             plumed_cmd(plumedmain,"setPlumedDat",plumedfile);
+             plumed_cmd(plumedmain,"setNatoms",&n_total_particles);
+	     
+             plumed_cmd(plumedmain,"setMDEngine","espresso");
+             plumed_cmd(plumedmain,"setLog",stdout);
+             plumed_cmd(plumedmain,"setTimestep",&time_step);
+
+	     MPI_Comm_group(MPI_COMM_WORLD, &plumed_mpi_group_world);
+
+             plumed_cmd(plumedmain,"init",NULL);
+
+       	}
   }
 
 #ifdef CATALYTIC_REACTIONS

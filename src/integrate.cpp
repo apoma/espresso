@@ -81,6 +81,9 @@ double time_step_squared_half = -1.0;
 /** plumed defaults is  not on **/ 
 int plumedison = 0;
 char plumedfile[MAX_DIMENSION]="plumed.dat";
+plumed plumedmain;
+MPI_Group plumed_mpi_group_world;
+
 
 double sim_time         = 0.0;
 double skin             = -1.0;
