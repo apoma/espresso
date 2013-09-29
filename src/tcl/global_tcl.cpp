@@ -123,11 +123,9 @@ int tclcommand_setmd(ClientData data, Tcl_Interp *interp,
 	      } else {
 		databuf.intbuf[0] &= ~(1L << j);
 	      }
-          fprintf(stderr, "datatype %s dta %d %d\n",fields[i].name,dta,databuf.intbuf[0]);
 	      break;
 	    }
             case TYPE_CHAR: {		
-		 fprintf(stderr, "this is a char\n");
 		strcpy(databuf.charbuf,argv[2 + j]);
 	      break;
 	    }
@@ -139,7 +137,6 @@ int tclcommand_setmd(ClientData data, Tcl_Interp *interp,
 	    }
 	  }
 	
-          fprintf(stderr, "now looking for callback %s %d\n",fields[i].name,i);
 	  if (find_callback(i)(interp, databuf.intbuf) != TCL_OK)
 	    return gather_runtime_errors(interp, TCL_ERROR);
 	  /* fall through to write out the set value immediately again */

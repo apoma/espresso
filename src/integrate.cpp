@@ -388,7 +388,7 @@ void integrate_vv(int n_steps)
            MPI_Comm_size(comm_cart, &size);
            MPI_Comm_rank(comm_cart, &rank);
            MPI_Bcast(&myenergy, 1, MPI_DOUBLE, 0, comm_cart);
-           fprintf(stderr,"STEP: %d THE SIZE IS %d AND THE RANK IS %d   ENE: %f\n",i,size,rank,myenergy);
+           //fprintf(stderr,"STEP: %d THE SIZE IS %d AND THE RANK IS %d   ENE: %f\n",i,size,rank,myenergy);
            plumed_cmd(plumedmain,"setEnergy",&myenergy);
         }	
         plumed_cmd(plumedmain,"setForces",forces);

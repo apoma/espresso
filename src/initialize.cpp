@@ -290,8 +290,6 @@ if(this_node == 0){
 // plumed is here
 //
   if(plumedison==1){
-  	fprintf(stderr,"PLUMED IS ON \n");
-  	fprintf(stderr,"PLUMEDFILE IS %s \n",plumedfile);
 	// now do the real initialization
  	// check if plumed is available	
 	if(!plumed_installed()){
@@ -299,7 +297,12 @@ if(this_node == 0){
 	      ERROR_SPRINTF(errtext,"{ You asked for plumed but it is not installed! }");
       	      check_runtime_errors();
 	}else{
-  	      fprintf(stderr,"YOU HAVE PLUMED INSTALLED \n");
+             int rank;
+             MPI_Comm_rank(comm_cart, &rank);
+  	     if(rank==0){
+  		fprintf(stderr,"PLUMED IS ON AND INSTALLED \n");
+  		fprintf(stderr,"PLUMEDFILE IS %s \n",plumedfile);
+	     }
              int double_precision=sizeof(double);
              double  energyUnits=1.0;
              double  lengthUnits=1.0;
@@ -317,14 +320,6 @@ if(this_node == 0){
              plumed_cmd(plumedmain,"setLog",stdout);
              plumed_cmd(plumedmain,"setTimestep",&time_step);
 
-
-	     //MPI_Comm_dup(MPI_COMM_WORLD, &plumed_mpi_comm_world);
-             int size, rank; 		
-	     //MPI_Comm_size(plumed_mpi_comm_world, &size);
-	     //MPI_Comm_rank(plumed_mpi_comm_world, &rank);
-	     //fprintf(stderr,"THE SIZE IS %d AND THE RANK IS %d\n",size,rank);
-
-	     //plumed_cmd(plumedmain,"setMPIComm",&plumed_mpi_comm_world);
 	     plumed_cmd(plumedmain,"setMPIComm",&comm_cart);
 
              plumed_cmd(plumedmain,"init",NULL);
