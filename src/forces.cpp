@@ -184,11 +184,10 @@ void force_calc()
 	      }		
       }
 //      fprintf(stderr,"tot: %d\n",ii);
- //     plumed_cmd(plumedmain,"setAtomsGatindex",indices);
-      plumed_cmd(plumedmain,"setAtomsContiguous",indices);
-         plumed_cmd(plumedmain,"setMasses",masses);
-         plumed_cmd(plumedmain,"setCharges",charges);
-         plumed_cmd(plumedmain,"setPositions",pos);
+      plumed_cmd(plumedmain,"setAtomsGatindex",indices);
+      plumed_cmd(plumedmain,"setMasses",masses);
+      plumed_cmd(plumedmain,"setCharges",charges);
+      plumed_cmd(plumedmain,"setPositions",pos);
 ///   //    plumed_cmd(plumedmain,"setBox",&state->box[0][0]);
          plumed_cmd(plumedmain,"prepareCalc",NULL);
          plumed_cmd(plumedmain,"isEnergyNeeded",&plumedNeedsEnergy);
