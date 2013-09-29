@@ -82,8 +82,8 @@ double time_step_squared_half = -1.0;
 int plumedison = 0;
 char plumedfile[MAX_DIMENSION]="plumed.dat";
 plumed plumedmain;
-MPI_Comm plumed_mpi_comm_world;
 int plumedNeedsEnergy=0;
+#include "energy.hpp"
 
 
 double sim_time         = 0.0;
@@ -208,6 +208,7 @@ void integrate_vv(int n_steps)
 #endif
 
    force_calc();
+
    
    //VIRTUAL_SITES distribute forces
 #ifdef VIRTUAL_SITES
@@ -334,6 +335,73 @@ void integrate_vv(int n_steps)
 #endif
 
     force_calc();
+
+    // PLUMED  
+    plumedNeedsEnergy=0;
+    if(plumedison){
+        plumed_cmd(plumedmain,"setStep",&i);
+        int nlocal=cells_get_n_particles();
+        plumed_cmd(plumedmain,"setAtomsNlocal",&nlocal);
+        // build index list
+        Cell *cell;Particle *p; 
+        int *indices=(int *)malloc(nlocal*sizeof(int));	
+        double *masses=(double *)malloc(nlocal*sizeof(double));	
+        double *charges=(double *)malloc(nlocal*sizeof(double));	
+        double *pos=(double *)malloc(3*nlocal*sizeof(double));	
+        double *forces=(double *)malloc(3*nlocal*sizeof(double));	
+        unsigned ii=0;
+        for (int c = 0; c < local_cells.n; c++) {
+                cell = local_cells.cell[c];
+                p  = cell->part;
+                unsigned np = cell->n;
+                for(unsigned i = 0; i < np; i++) {
+          		indices[ii]=p[i].p.identity	;		 
+          		masses[ii]=p[i].p.mass	;		 
+          		charges[ii]=p[i].p.q	;		 
+          		pos[3*ii]  =p[i].r.p[0];
+          		pos[3*ii+1]=p[i].r.p[1];
+          		pos[3*ii+2]=p[i].r.p[2];
+          		forces[3*ii]  =p[i].f.f[0];
+          		forces[3*ii+1]=p[i].f.f[1];
+          		forces[3*ii+2]=p[i].f.f[2];
+          		ii++;
+                }		
+        }
+        plumed_cmd(plumedmain,"setAtomsGatindex",indices);
+        plumed_cmd(plumedmain,"setMasses",masses);
+        plumed_cmd(plumedmain,"setCharges",charges);
+        plumed_cmd(plumedmain,"setPositions",pos);
+        double pvirial[3][3];
+        for(int ii=0;ii<3;ii++) for(int jj=0;jj<3;jj++) pvirial[ii][jj]=0.0;
+        double pbox[3][3];
+        for(int ii=0;ii<3;ii++) for(int jj=0;jj<3;jj++) pbox[ii][jj]=0.0;
+        pbox[0][0]=box_l[0];
+        pbox[1][1]=box_l[1];
+        pbox[2][2]=box_l[2];
+        plumed_cmd(plumedmain,"setBox",&pbox[0][0]);
+        plumed_cmd(plumedmain,"prepareCalc",NULL);
+        plumed_cmd(plumedmain,"isEnergyNeeded",&plumedNeedsEnergy);
+        if(plumedNeedsEnergy){
+           int size, rank; 		
+           double myenergy; 
+           energy_calc(&myenergy); 
+           MPI_Comm_size(comm_cart, &size);
+           MPI_Comm_rank(comm_cart, &rank);
+           MPI_Bcast(&myenergy, 1, MPI_DOUBLE, 0, comm_cart);
+           fprintf(stderr,"STEP: %d THE SIZE IS %d AND THE RANK IS %d   ENE: %f\n",i,size,rank,myenergy);
+           plumed_cmd(plumedmain,"setEnergy",&myenergy);
+        }	
+        plumed_cmd(plumedmain,"setForces",forces);
+        plumed_cmd(plumedmain,"setVirial",&pvirial[0][0]);
+        plumed_cmd(plumedmain,"performCalc",NULL);
+        free(indices);
+        free(masses);
+        free(charges);
+        free(pos);
+        free(forces);
+    }
+
+
 
     //VIRTUAL_SITES distribute forces
 #ifdef VIRTUAL_SITES

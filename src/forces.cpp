@@ -147,61 +147,6 @@ void force_calc()
   meta_perform();
 #endif
 
-// PLUMED  
-  plumedNeedsEnergy=0;
-  if(plumedison){
-      unsigned iii=0; 
-	//TODO must be fixed
-      plumed_cmd(plumedmain,"setStep",&iii);
-      int nlocal=cells_get_n_particles();
-      plumed_cmd(plumedmain,"setAtomsNlocal",&nlocal);
- //     fprintf(stderr,"NLOCAL %d\n",nlocal);	
-      // build index list
-      Cell *cell;Particle *p; 
-      int *indices=(int *)malloc(nlocal*sizeof(int));	
-      double *masses=(double *)malloc(nlocal*sizeof(double));	
-      double *charges=(double *)malloc(nlocal*sizeof(double));	
-      double *pos=(double *)malloc(3*nlocal*sizeof(double));	
-      double *forces=(double *)malloc(3*nlocal*sizeof(double));	
-      unsigned ii=0;
-      for (unsigned c = 0; c < local_cells.n; c++) {
-	      cell = local_cells.cell[c];
-              p  = cell->part;
-              unsigned np = cell->n;
- //            fprintf(stderr,"cell %d\n",c);
-	      for(unsigned i = 0; i < np; i++) {
-			indices[ii]=p[i].p.identity	;		 
-			masses[ii]=p[i].p.mass	;		 
-			charges[ii]=p[i].p.q	;		 
-//			fprintf(stderr,"AT %d : %f %f\n",indices[ii],masses[ii],charges[ii]);
- 			pos[3*ii]  =p[i].r.p[0];
- 			pos[3*ii+1]=p[i].r.p[1];
- 			pos[3*ii+2]=p[i].r.p[2];
- 			forces[3*ii]  =p[i].f.f[0];
- 			forces[3*ii+1]=p[i].f.f[1];
- 			forces[3*ii+2]=p[i].f.f[2];
-			ii++;
-	      }		
-      }
-//      fprintf(stderr,"tot: %d\n",ii);
-      plumed_cmd(plumedmain,"setAtomsGatindex",indices);
-      plumed_cmd(plumedmain,"setMasses",masses);
-      plumed_cmd(plumedmain,"setCharges",charges);
-      plumed_cmd(plumedmain,"setPositions",pos);
-///   //    plumed_cmd(plumedmain,"setBox",&state->box[0][0]);
-         plumed_cmd(plumedmain,"prepareCalc",NULL);
-         plumed_cmd(plumedmain,"isEnergyNeeded",&plumedNeedsEnergy);
-///         //if(plumedNeedsEnergy) plumed_cmd(plumedmain,"setEnergy",&total_energy);
-        plumed_cmd(plumedmain,"setForces",forces);
-  //              plumed_cmd(plumedmain,"setVirial",&force_vir[0][0]);
-     plumed_cmd(plumedmain,"performCalc",NULL);
-      free(indices);
-      free(masses);
-      free(charges);
-      free(pos);
-      free(forces);
-  }
-
 #if defined(LB_GPU) || (defined(ELECTROSTATICS) && defined(CUDA))
   copy_forces_from_GPU();
 #endif
