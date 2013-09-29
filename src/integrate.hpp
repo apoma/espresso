@@ -53,7 +53,8 @@ extern int plumedison ;
 extern char plumedfile[];
 extern plumed plumedmain;
 // get a workaround for nonmpi implementation 
-extern MPI_Group plumed_mpi_group_world;
+extern MPI_Comm plumed_mpi_comm_world;
+extern int plumedNeedsEnergy;
 
 /** Old time step needed for rescaling of forces. */
 extern double old_time_step;

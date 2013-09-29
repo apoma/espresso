@@ -317,7 +317,14 @@ if(this_node == 0){
              plumed_cmd(plumedmain,"setLog",stdout);
              plumed_cmd(plumedmain,"setTimestep",&time_step);
 
-	     MPI_Comm_group(MPI_COMM_WORLD, &plumed_mpi_group_world);
+	     MPI_Comm_dup(MPI_COMM_WORLD, &plumed_mpi_comm_world);
+
+             int size, rank; 		
+	     MPI_Comm_size(plumed_mpi_comm_world, &size);
+	     MPI_Comm_rank(plumed_mpi_comm_world, &rank);
+	     fprintf(stderr,"THE SIZE IS %d AND THE RANK IS %d\n",size,rank);
+
+	     plumed_cmd(plumedmain,"setMPIComm",&plumed_mpi_comm_world);
 
              plumed_cmd(plumedmain,"init",NULL);
 
