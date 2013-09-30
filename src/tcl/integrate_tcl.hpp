@@ -52,6 +52,7 @@ int tclcommand_invalidate_system(ClientData data, Tcl_Interp *interp, int argc, 
  */
 int tclcallback_plumed(Tcl_Interp *interp, void *_data);
 int tclcallback_plumedfile(Tcl_Interp *interp, void *_data);
+int tclcallback_plumedreset(Tcl_Interp *interp, void *_data);
 
 /*@}*/
 

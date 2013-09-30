@@ -151,6 +151,7 @@ void on_program_start()
     /* interaction_data.c: make sure 0<->0 ia always exists */
     make_particle_type_exist(0);
   }
+
 }
 
 
@@ -290,41 +291,52 @@ if(this_node == 0){
 // plumed is here
 //
   if(plumedison==1){
-	// now do the real initialization
- 	// check if plumed is available	
-	if(!plumed_installed()){
-      	      errtext = runtime_error(128);
-	      ERROR_SPRINTF(errtext,"{ You asked for plumed but it is not installed! }");
-      	      check_runtime_errors();
-	}else{
-             int rank;
-             MPI_Comm_rank(comm_cart, &rank);
-  	     if(rank==0){
-  		fprintf(stderr,"PLUMED IS ON AND INSTALLED \n");
-  		fprintf(stderr,"PLUMEDFILE IS %s \n",plumedfile);
-	     }
-             int double_precision=sizeof(double);
-             double  energyUnits=1.0;
-             double  lengthUnits=1.0;
-             double  timeUnits=1.0;
-             plumedmain=plumed_create();
-             plumed_cmd(plumedmain,"setRealPrecision",&double_precision);
-             // this is not necessary for gromacs units:
-             plumed_cmd(plumedmain,"setMDEnergyUnits",&energyUnits);
-             plumed_cmd(plumedmain,"setMDLengthUnits",&lengthUnits);
-             plumed_cmd(plumedmain,"setMDTimeUnits",&timeUnits);
-             plumed_cmd(plumedmain,"setPlumedDat",plumedfile);
-             plumed_cmd(plumedmain,"setNatoms",&n_total_particles);
-	     
-             plumed_cmd(plumedmain,"setMDEngine","espresso");
-             plumed_cmd(plumedmain,"setLog",stdout);
-             plumed_cmd(plumedmain,"setTimestep",&time_step);
+ 
+	    if(plumedreset==1 && plumedisset==1){
+		// finalize plumed and reallocate a new one 
+	        plumed_finalize(plumedmain);	
+		plumedisset=0;
+	    } ;
+            // 
+            // just initialize when is not set 
+            // 
+	    if( plumedisset==0 ){ 
+	    	// now do the real initialization
+ 	    	// check if plumed is available	
+	    	if(!plumed_installed()){
+      	    	      errtext = runtime_error(128);
+	    	      ERROR_SPRINTF(errtext,"{ You asked for plumed but it is not installed! }");
+      	    	      check_runtime_errors();
+	    	}else{
+            	     int rank;
+            	     MPI_Comm_rank(comm_cart, &rank);
+  	    	     if(rank==0){
+  	    		fprintf(stderr,"PLUMED IS ON AND INSTALLED \n");
+  	    		fprintf(stderr,"PLUMEDFILE IS %s \n",plumedfile);
+	    	     }
+            	     int double_precision=sizeof(double);
+            	     double  energyUnits=1.0;
+            	     double  lengthUnits=1.0;
+            	     double  timeUnits=1.0;
+            	     plumedmain=plumed_create();
+            	     plumed_cmd(plumedmain,"setRealPrecision",&double_precision);
+            	     // this is not necessary for gromacs units:
+            	     plumed_cmd(plumedmain,"setMDEnergyUnits",&energyUnits);
+            	     plumed_cmd(plumedmain,"setMDLengthUnits",&lengthUnits);
+            	     plumed_cmd(plumedmain,"setMDTimeUnits",&timeUnits);
+            	     plumed_cmd(plumedmain,"setPlumedDat",plumedfile);
+            	     plumed_cmd(plumedmain,"setNatoms",&n_total_particles);
+	    	     
+            	     plumed_cmd(plumedmain,"setMDEngine","espresso");
+            	     plumed_cmd(plumedmain,"setLog",stdout);
+            	     plumed_cmd(plumedmain,"setTimestep",&time_step);
 
-	     plumed_cmd(plumedmain,"setMPIComm",&comm_cart);
+	    	     plumed_cmd(plumedmain,"setMPIComm",&comm_cart);
 
-             plumed_cmd(plumedmain,"init",NULL);
-
-       	}
+            	     plumed_cmd(plumedmain,"init",NULL);
+	    	     plumedisset=1; // just a flag to remember that this is set up 
+       	    	}
+	    }
   }
 
 #ifdef CATALYTIC_REACTIONS

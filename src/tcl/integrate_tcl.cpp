@@ -296,4 +296,19 @@ int tclcallback_plumedfile(Tcl_Interp *interp, void *_data)
   return (TCL_OK);
 }
 
+int tclcallback_plumedreset(Tcl_Interp *interp, void *_data)
+{
+  int tmp_plumed;
+  tmp_plumed = *(int *)_data;
+  if(tmp_plumed<0 || tmp_plumed>1 ){
+           Tcl_AppendResult(interp, "plumedreset can be only 1 or 0", (char *) NULL);
+           return (TCL_ERROR);
+  }
+  plumedreset=tmp_plumed;
+  mpi_bcast_parameter(FIELD_PLUMEDRESET);
+  return (TCL_OK);
+}
+
+
+
 

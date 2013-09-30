@@ -80,6 +80,8 @@ double time_step_squared_half = -1.0;
 
 /** plumed defaults is  not on **/ 
 int plumedison = 0;
+int plumedreset = 0;
+int plumedisset = 0;
 char plumedfile[MAX_DIMENSION]="plumed.dat";
 plumed plumedmain;
 int plumedNeedsEnergy=0;
@@ -339,7 +341,8 @@ void integrate_vv(int n_steps)
     // PLUMED  
     plumedNeedsEnergy=0;
     if(plumedison){
-        plumed_cmd(plumedmain,"setStep",&i);
+	int pstep=int(sim_time/time_step);
+        plumed_cmd(plumedmain,"setStep",&pstep);
         int nlocal=cells_get_n_particles();
         plumed_cmd(plumedmain,"setAtomsNlocal",&nlocal);
         // build index list
@@ -394,6 +397,20 @@ void integrate_vv(int n_steps)
         plumed_cmd(plumedmain,"setForces",forces);
         plumed_cmd(plumedmain,"setVirial",&pvirial[0][0]);
         plumed_cmd(plumedmain,"performCalc",NULL);
+        // transfer forces
+	ii=0;
+        for (int c = 0; c < local_cells.n; c++) {
+                cell = local_cells.cell[c];
+                p  = cell->part;
+                unsigned np = cell->n;
+                for(unsigned i = 0; i < np; i++) {
+          		p[i].f.f[0]=forces[3*ii]  ;
+          		p[i].f.f[1]=forces[3*ii+1];
+          		p[i].f.f[2]=forces[3*ii+2];
+          		ii++;
+                }		
+        }
+ 
         free(indices);
         free(masses);
         free(charges);

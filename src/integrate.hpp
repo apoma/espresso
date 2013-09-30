@@ -50,6 +50,8 @@ extern double time_step_squared_half;
 
 /** plumed activation **/
 extern int plumedison ;
+extern int plumedreset;
+extern int plumedisset;
 extern char plumedfile[];
 extern plumed plumedmain;
 extern int plumedNeedsEnergy;

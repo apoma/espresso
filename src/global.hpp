@@ -183,6 +183,7 @@ extern const Datafield fields[];
 /** index of \ref plumed in \ref #fields */
 #define FIELD_PLUMED       52 
 #define FIELD_PLUMEDFILE   53 
+#define FIELD_PLUMEDRESET  54 
 /*@}*/
 
 #endif

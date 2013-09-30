@@ -237,6 +237,7 @@ static void register_global_variables(Tcl_Interp *interp)
   register_global_callback(FIELD_MIN_GLOBAL_CUT, tclcallback_min_global_cut);
   register_global_callback(FIELD_PLUMED, tclcallback_plumed);
   register_global_callback(FIELD_PLUMEDFILE, tclcallback_plumedfile);
+  register_global_callback(FIELD_PLUMEDRESET, tclcallback_plumedreset);
 }
 
 int appinit(Tcl_Interp *interp)
