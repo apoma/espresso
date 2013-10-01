@@ -34,7 +34,7 @@
           <h3>
 <a name="welcome-espresso-package-a-plumed-20-enhanced-version" class="anchor" href="#welcome-espresso-package-a-plumed-20-enhanced-version"><span class="octicon octicon-link"></span></a>Welcome ESPResSo package. A Plumed 2.0 enhanced version.</h3>
 
-<p>This is a fork from the <a href="http://espressomd.org/">ESPReSso project</a> which is intended to integrate the  <a href="http://www.plumed-code.org">Plumed 2.0 code</a>into ESPReSso package.</p>
+<p>This is a fork from the <a href="http://espressomd.org/">ESPReSso project</a> which is intended to integrate the  <a href="http://www.plumed-code.org">Plumed 2.0 code</a> into ESPReSso package.</p>
 
 <p>Plumed 2.0 is intended to give enhanced sampling capabilities to ESPResSo molecular dynamics engine.</p>
 
@@ -42,34 +42,30 @@
 
 <p>The <a href="http://plumed.github.io/doc-v2.0/user-doc/html/index.html">documentation of Plumed 2.0</a> is on Github as well. It is regularly updated.</p>
 
-<p>In order to compile it you should download the package and checkout the plumed branch</p>
+<p>In order to compile it you should download the package pointed above. That should be the correct branch</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<p>You need also have Plumed 2.0 installed. You can get it from <a href="http://www.plumed-code.org">Plumed 2.0 code</a> website.
+If you need a bleeding edge version please visit  <a https://github.com/plumed/plumed2> this page </a>. </p>
+
+<p>After you compile Plumed 2.0 in the directory <code>/path/to/plumed2/</code> you can proceed to compile ESPResSo  </p>
+<p>On my machine it simply </p>
+<pre><code>
+$source /path/to/plumed2/sourceme.sh
+$export CPPFLAGS=" -I/path/to/plumed2/src/wrapper "
+$export LDFLAGS=" -L/path/to/plumed2/src/lib -lplumed "
+$./bootstrap.sh
+$./configure
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
 
 <h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Caveat</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>I do not guarantee that this version will be kept syncronized with the ESPReSo version so you
+  can try to merge yourself with the original <a https://github.com/espressomd/espresso>espresso git</a>.
+</p>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
         </section>
 
         <footer>
