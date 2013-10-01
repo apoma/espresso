@@ -322,6 +322,8 @@ if(this_node == 0){
             	     plumed_cmd(plumedmain,"setRealPrecision",&double_precision);
             	     // this is not necessary for gromacs units:
             	     plumed_cmd(plumedmain,"setMDEnergyUnits",&energyUnits);
+		     int myNaturalUnits=1;
+            	     plumed_cmd(plumedmain,"setNaturalUnits",&myNaturalUnits);
             	     plumed_cmd(plumedmain,"setMDLengthUnits",&lengthUnits);
             	     plumed_cmd(plumedmain,"setMDTimeUnits",&timeUnits);
             	     plumed_cmd(plumedmain,"setPlumedDat",plumedfile);
