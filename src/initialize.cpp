@@ -290,6 +290,11 @@ if(this_node == 0){
 //
 // plumed is here
 //
+  // this switches off plumed if it was off before
+  if(plumedisset==1 && plumedison==0 ){
+	        plumed_finalize(plumedmain);	
+		plumedisset=0;
+  }
   if(plumedison==1){
  
 	    if(plumedreset==1 && plumedisset==1){
