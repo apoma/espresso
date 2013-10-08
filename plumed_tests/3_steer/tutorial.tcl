@@ -84,6 +84,8 @@ puts  $plumed_input "  STEP1=20000  AT1=40.0  KAPPA1=5.0"
 puts  $plumed_input "  STEP2=40000  AT2=2.0   KAPPA2=5.0"
 puts  $plumed_input "... MOVINGRESTRAINT "
 puts  $plumed_input "PRINT ARG=* STRIDE=50 FILE=COLVAR" 
+puts  $plumed_input "PRINT ARG=@1.d1_cntr,@1.d1_work STRIDE=50 FILE=WORK"
+
 close $plumed_input
 #
 # this is where plumed is applied

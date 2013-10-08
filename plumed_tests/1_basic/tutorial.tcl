@@ -65,7 +65,7 @@ inter forcecap 0
 
 #puts "[inter coulomb 1.0 p3m tune accuracy 0.001 mesh 8]"
 
-set n_cycle 100
+set n_cycle 500
 set n_steps 100
 
 set f [open "test.vtf" w]
