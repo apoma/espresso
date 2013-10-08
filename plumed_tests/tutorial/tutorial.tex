@@ -169,6 +169,7 @@ You can proceed in the usual way with ESPResSo but you should define two flags b
 \begin{verbatim}
 export CPPFLAGS=" -I /my/path/to/plumed2/src/wrapper "
 export LDFLAGS=" -L /my/path/to/plumed2/src/lib -lplumed "
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/my/path/to/plumed2/src/lib/
 \end{verbatim}
 and then you proceed with bootstrapping, configuring and making.
 
@@ -178,6 +179,43 @@ Note: it is possible that this version will not be regularly updated.
 In general you can update yourself just by merging the master on the current branch. 
 This requires a bit of git expertise though. 
 
+\subsection{A note regarding the specific location in which is performed the tutorial}
+
+In the tutorial room there are a number of available PCs. They are numbered from cip1 to cip24.
+
+Before running the PLUMED2.0 version of ESPResSo you should set up the environment like this
+\begin{verbatim}
+export LD_LIBRARY_PATH=
+   /home/davide/software/plumed2/src/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=
+   /home/davide/software/libmatheval-1.1.10_install/lib64:$LD_LIBRARY_PATH
+ source  /home/davide/software/plumed2/sourceme.sh 
+\end{verbatim}
+
+Now you can use the executable of ESPResSo I compiled for you from 
+\begin{verbatim}
+/home/davide/software/espresso/Espresso
+\end{verbatim}
+and you can link it or copy as you wish.
+
+{\bf For your convenience I made all those steps in a single bash file to source}
+\begin{verbatim}
+source /home/davide/software/espresso/SETUP_FULL_ENVIRONMENT.sh
+\end{verbatim}
+
+You should also have PLUMED2.0 as command line tool.
+Just try
+\begin{verbatim}
+plumed help
+\end{verbatim}
+and you should have a list of options.
+
+In the directory
+\begin{verbatim}
+/home/davide/software/espresso/plumed_tests
+\end{verbatim}
+
+you have the exercises. Copy them in your local directory.
 
 \subsection{Switching on PLUMED2.0}
 Now, if you do not explicitly ask for PLUMED2.0, your code will work normally as it was without it.
@@ -242,6 +280,11 @@ d1:  DISTANCE ATOMS=1,40
 PRINT ARG=* STRIDE=50 FILE=COLVAR
 \end{verbatim}
 which trivially calculates the distance between the two end of the chain and print it out on a file named \texttt{COLVAR}.
+In the tutorial location you can run the example like this
+\begin{verbatim}
+/home/davide/software/espresso/Espresso tutorial.tcl
+\end{verbatim}
+
 As soon as the first \texttt{integrate} command is run you get a banner like this
 \begin{verbatim}
 PLUMED IS ON AND INSTALLED
